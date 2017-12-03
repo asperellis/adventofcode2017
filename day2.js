@@ -26,19 +26,16 @@ const calcCheckSum2 = (data) => {
   let checkSum = 0;
 
   cleanData(data).forEach((row) => {
-    for(let k = 0; k < row.length; k++) {
-      const n = row[k];
-      for(let i = 0; i < row.length; i++) {
-        if(i !== k) {
-          const n2 = row[i];
-          if(n % n2 === 0) {
-            checkSum += n / n2;
-          }
-        }
+    while(row.length) {
+      const n = row.pop();
+      const n2 = row.filter((n2) => n % n2 === 0).pop();
+      if(n2) {
+        checkSum += n / n2;
+        break;
       }
-    };
+    }
   });
-  return checkSum
+  return checkSum;
 };
 
 console.log(calcCheckSum(spreadsheet));
