@@ -12,8 +12,12 @@ const anagramCheck = (phrase) => {
   const phraseArr = phrase.trim().split(' ');
   let hasAnagrams = false;
   
+  // take each word and compare it to the other words in the array
   while(phraseArr.length) {
+    // sort by char to do a character comparison
     const word = phraseArr.pop().split('').sort().join('');
+    
+    // if the length and chars of the word are the same then they are anagrams and must return true. no need to continue searching.
     if(phraseArr.filter((w) => w.length === word.length && w.split('').sort().join('') === word).length) {
       hasAnagrams = true;
       break;
