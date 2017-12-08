@@ -5,6 +5,7 @@ fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
   const values = {};
   // for tracking the highest value held at any time
   let highestValueHeld = 0;
+
   // for comparing
   const comparators = {
     "==": (a, b) => a == b,
@@ -40,6 +41,7 @@ fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
     }
   };
   
+  // build each line into a more workable obj
   const buildRule = (line) => {
     const condition = line.split(' if ').pop().split(' ');
     const todo = line.split(' if ')[0].split(' ');
@@ -53,6 +55,7 @@ fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
     };
   };
 
+  // process the data
   data.trim().split('\n').map(buildRule).forEach(runRule);
 
   // part 1
