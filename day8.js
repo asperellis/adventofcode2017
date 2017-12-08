@@ -1,20 +1,10 @@
 const fs = require('fs');
 
 fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
-  // map each line into an obj for easier use
-  const input = data.trim().split('\n').map((instruction) => {
-    const condition = instruction.split(' if ').pop().split(' ');
-    const todo = instruction.split(' if ')[0].split(' ');
-    return {
-      conditionName: condition[0],
-      comparator: condition[1],
-      valToCompare: parseInt(condition[2], 10),
-      nameToChange: todo[0],
-      change: todo[1],
-      valToChange: parseInt(todo[2], 10), 
-    };
-  });
-
+  // stores values
+  const values = {};
+  // for tracking the highest value held at any time
+  let highestValueHeld = 0;
   // for comparing
   const comparators = {
     "==": (a, b) => a == b,
@@ -25,11 +15,8 @@ fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
     "<=": (a, b) => a <= b,
   };
 
-  const values = {};
-  let highestValueHeld = 0;
-
-  // follow the rules
-  input.forEach((obj) => {
+  // run the rule
+  const runRule = (obj) => {
     const conditionValue = values[obj.conditionName] || 0;
     const conditionMet = comparators[obj.comparator](conditionValue, obj.valToCompare);
   
@@ -51,7 +38,22 @@ fs.readFile('inputs/day8.txt', 'utf8', (err, data) => {
         highestValueHeld = values[obj.nameToChange];
       }
     }
-  });
+  };
+  
+  const buildRule = (line) => {
+    const condition = line.split(' if ').pop().split(' ');
+    const todo = line.split(' if ')[0].split(' ');
+    return {
+      conditionName: condition[0],
+      comparator: condition[1],
+      valToCompare: parseInt(condition[2], 10),
+      nameToChange: todo[0],
+      change: todo[1],
+      valToChange: parseInt(todo[2], 10), 
+    };
+  };
+
+  data.trim().split('\n').map(buildRule).forEach(runRule);
 
   // part 1
   console.log(values[Object.keys(values).sort((a,b) => values[b] - values[a])[0]]);
