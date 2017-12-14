@@ -18,7 +18,7 @@ fs.readFile('inputs/day13.txt', 'utf8', (err, data) => {
     return firewall;
   }
 
-  const calcSeverity = (wall, delay = 0, needSeverity = true) => {
+  const calcRoute = (wall, delay = 0, needSeverity = true) => {
     let location = -1;
     let time = 0;
     let severity = 0;
@@ -79,10 +79,10 @@ fs.readFile('inputs/day13.txt', 'utf8', (err, data) => {
   };
 
   // part 1
-  console.log(calcSeverity(buildFirewall()));
+  console.log(calcRoute(buildFirewall()));
 
   let delay = 0;
-  while(calcSeverity(buildFirewall(), delay, false)) {
+  while(calcRoute(buildFirewall(), delay, false)) {
     delay++;
   }
 

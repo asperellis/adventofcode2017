@@ -1,13 +1,16 @@
-const fs = require('fs');
-
 // knot hash, takes array of ints and optional repititions param to specify how many times to run initial hashing
 const knotHash = (input, repititions) => {
+  // make a str an ascii code
+  const makeAscii = (str) => {
+    return str.charCodeAt(0);
+  };
   const list = [...Array(256).keys()];
   // current position
   let currentPos = 0;
   let skipSize = 0;
   // puzzle input
-  let inputLengths = input;
+  let inputLengths = input.trim().split('').map(makeAscii);
+  inputLengths.push(17, 31, 73, 47, 23);
 
   // make dense hash - for every 16 indexes in array - reduce to a XOR bitwise
   const makeDenseHash = (arr) => {
@@ -74,19 +77,5 @@ const knotHash = (input, repititions) => {
   return makeHexHash(makeDenseHash(list));
 };
 
-// make a str an ascii code
-const makeAscii = (str) => {
-  return str.charCodeAt(0);
-};
 
-fs.readFile('inputs/day10.txt', 'utf8', (err, data) => {
-  // for part 2
-  const dataAsAscii = data.trim().split('').map(makeAscii);
-  dataAsAscii.push(17, 31, 73, 47, 23);
-
-  // part 1
-  console.log(knotHash(data.split(',').map(Number)));
-  
-  // part 2
-  console.log(knotHash(dataAsAscii, 64));
-});
+module.exports = knotHash;
