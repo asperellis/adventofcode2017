@@ -1,4 +1,3 @@
-const fs = require('fs');
 const knotHash = require('./utils/knot-hash');
 const padLeft = s => '0000'.substring(0, 4 - s.length) + s;
 const makeBinary = str => str.split('').map((c) => padLeft(parseInt(c, 16).toString(2))).join('');
@@ -39,13 +38,16 @@ const gridRegions = (grid) => {
   // get a region and build it out with its adjacents if any
   // used reddit for help on this one. notes lead this way but wasn't sure how to proceed
   const getRegion = (x, y) => {
+    // do nothing if invalid
     if(!isValidNode([x, y])) {
       return;
     }
     
+    // add to region count. a single 1 can be a region
     regions++;
 
-    const nodesQueue = [[x, y]]
+    // logic from internet
+    const nodesQueue = [[x, y]];
     while (nodesQueue.length) {
       const [x, y] = nodesQueue.shift()
       visited[`${x},${y}`] = true
