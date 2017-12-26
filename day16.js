@@ -53,13 +53,17 @@ fs.readFile('inputs/day16.txt', 'utf8', (err, data) => {
   const sort = (arr, list, reps = 1) => {
     let sorted = arr;
     let counter = 0;
+    const past = {};
 
     while (counter < reps) {
-      for(let i = 0; i < list.length; i++) {
-        sorted = actions[list[i].rule](arr, list[i].first, list[i].second);
-      }
-      if(counter % 10000000 === 0) {
-        console.log('still going', counter);
+      const old = sorted;
+      if(past[old.join('')]) {
+        sorted = past[old.join('')];
+      } else {
+        for(let i = 0; i < list.length; i++) {
+          sorted = actions[list[i].rule](arr, list[i].first, list[i].second);
+        }
+        past[old.join('')] = sorted; 
       }
       counter++;
     }
